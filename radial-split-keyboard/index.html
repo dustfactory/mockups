@@ -4,14 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#faf9f7">
-<title>Radial Split · 한글 키보드 목업</title>
+<title>키보드</title>
 <style>
 :root {
   color-scheme: light;
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans CJK KR", "Malgun Gothic", sans-serif;
   --paper: #faf9f7;
   --ink: #252426;
-  --muted: #737074;
   --line: #e2dfdd;
   --accent: #625197;
   --accent-soft: #ddd6f4;
@@ -36,46 +35,37 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   position: relative; isolation: isolate; overflow: hidden;
   height: 100vh; height: 100dvh; display: flex; flex-direction: column;
 }
-.topbar {
-  position: relative; z-index: 3; flex: 0 0 auto; display: flex;
-  align-items: center; justify-content: space-between; gap: 16px;
-  padding: calc(15px + env(safe-area-inset-top)) max(var(--side-pad), env(safe-area-inset-right)) 15px max(var(--side-pad), env(safe-area-inset-left));
-  border-bottom: 1px solid var(--line);
+.controls {
+  position: absolute; z-index: 3;
+  top: calc(8px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
 }
-.brand { display: flex; gap: 10px; align-items: center; font-size: 15px; font-weight: 650; letter-spacing: -.04em; }
-.brand svg { width: 28px; height: 23px; color: var(--accent); }
-.controls { position: relative; }
-.settings-toggle {
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 20px;
-  color: #4e4a50; background: transparent; font-size: 12px; font-weight: 550; cursor: pointer;
+.settings-toggle, .reset-size {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  background: transparent; border: 0; border-radius: 50%; padding: 0;
+  color: #716d72; cursor: pointer;
 }
-.settings-toggle:hover, .settings-toggle[aria-expanded="true"] { background: #efedea; }
+.settings-toggle:hover, .settings-toggle[aria-expanded="true"], .reset-size:hover { background: #efedea; }
 .settings {
-  position: absolute; top: calc(100% + 10px); right: 0; width: min(245px, 80vw);
-  padding: 17px 18px 13px; border-radius: 13px; border: 1px solid var(--line);
+  position: absolute; top: calc(100% + 4px); right: 0;
+  display: flex; align-items: center; gap: 8px; width: min(216px, 80vw);
+  padding: 4px 4px 4px 16px; border-radius: 14px; border: 1px solid var(--line);
   background: #fffefa; box-shadow: 0 5px 22px #24212b12;
 }
 .settings[hidden] { display: none; }
-.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.settings label { font-size: 13px; font-weight: 650; }
-.settings output { color: var(--accent); font-size: 13px; font-variant-numeric: tabular-nums; }
-.settings input { display: block; width: 100%; margin: 8px 0; min-height: 30px; accent-color: var(--accent); }
-.settings .hint { color: var(--muted); font-size: 11px; }
-.reset-size { font-size: 11px; background: transparent; border: 0; color: var(--accent); padding: 7px 1px; cursor: pointer; }
+.settings input { flex: 1; min-width: 0; height: 44px; margin: 0; accent-color: var(--accent); }
+.reset-size { flex: none; }
 .note {
   z-index: 1; display: flex; flex: 1; min-height: 0; flex-direction: column;
-  padding: clamp(20px, 5.6vh, 68px) max(var(--side-pad), env(safe-area-inset-right)) 0 max(var(--side-pad), env(safe-area-inset-left));
+  padding: max(22px, calc(12px + env(safe-area-inset-top))) max(var(--side-pad), calc(68px + env(safe-area-inset-right))) 0 max(var(--side-pad), env(safe-area-inset-left));
   margin-bottom: var(--fan-size);
 }
-h1 { margin: 0 0 clamp(12px, 2.8vh, 28px); font-size: clamp(24px, 3.1vw, 39px); font-weight: 630; letter-spacing: -.065em; line-height: 1.25; }
 #editor {
   color: var(--ink); caret-color: var(--accent); background: transparent; width: 100%;
   flex: 1; min-height: 0; margin: 0; padding: 1px 0 10px; border: 0; outline: none;
   border-radius: 0; resize: none; font-size: clamp(18px, 1.9vw, 25px); line-height: 1.6;
   letter-spacing: -.028em; -webkit-appearance: none; appearance: none;
 }
-#editor::placeholder { color: #87828b; opacity: 1; }
 .fan {
   position: absolute; bottom: env(safe-area-inset-bottom, 0px);
   width: var(--fan-size); height: var(--fan-size); display: block; overflow: visible;
@@ -92,40 +82,30 @@ h1 { margin: 0 0 clamp(12px, 2.8vh, 28px); font-size: clamp(24px, 3.1vw, 39px); 
 @media (hover: hover) and (pointer: fine) { .key:hover .cap { fill: #e5e0ed; } }
 .key.is-pressed .cap, .key:active .cap, .key[aria-pressed="true"] .cap { fill: var(--accent-soft); stroke: #b4a7d4; }
 .key:focus-visible .cap { stroke: var(--accent); stroke-width: 2.8; }
-@media (max-height: 490px) {
-  .topbar { padding-top: max(5px, env(safe-area-inset-top)); padding-bottom: 5px; }
-  .note { padding-top: 12px; }
-  h1 { font-size: 23px; margin-bottom: 5px; }
-}
 @media (prefers-contrast: more) {
   .cap { stroke: #7e7980; }
-  #editor::placeholder { color: #68636a; }
 }
 </style>
 </head>
 <body>
 <main class="app">
-  <header class="topbar">
-    <div class="brand" lang="en">
-      <svg viewBox="0 0 32 25" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round"><path d="M2 7c8.1 0 14.5 6.5 14.5 14.5M2 13c4.8 0 8.5 3.7 8.5 8.5M2 19c1.4 0 2.5 1.1 2.5 2.5M30 7c-6.3 0-11.7 4-13.7 9.5M30 13c-4.8 0-8.5 3.7-8.5 8.5M30 19a2.5 2.5 0 0 0-2.5 2.5"/></svg>
-      <span>Radial Split</span>
-    </div>
-    <div class="controls">
-      <button id="settings-toggle" class="settings-toggle" type="button" aria-expanded="false" aria-controls="settings">
-        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"><path d="M3 7h6m5 0h7M3 17h10m5 0h3"/><circle cx="11.5" cy="7" r="2.5"/><circle cx="15.5" cy="17" r="2.5"/></svg>
-        자판 조절
+  <div class="controls">
+    <button id="settings-toggle" class="settings-toggle" type="button" aria-label="자판 설정" aria-expanded="false" aria-controls="settings">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.4 2.8h3.2l.6 2.2 1.9 1.1 2.2-.6 1.6 2.8-1.6 1.6v2.2l1.6 1.6-1.6 2.8-2.2-.6-1.9 1.1-.6 2.2h-3.2l-.6-2.2-1.9-1.1-2.2.6-1.6-2.8 1.6-1.6V9.9L4.1 8.3l1.6-2.8 2.2.6L9.8 5z" transform="translate(0 1)"/>
+        <circle cx="12" cy="12" r="3.1"/>
+      </svg>
+    </button>
+    <div id="settings" class="settings" hidden>
+      <input id="radius" type="range" min="80" max="120" step="5" value="100" aria-label="자판 반경">
+      <button type="button" class="reset-size" id="reset-size" aria-label="기본 반경으로 복원">
+        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a8 8 0 1 1 1 6M4 5v5h5"/></svg>
       </button>
-      <div id="settings" class="settings" hidden>
-        <div class="row"><label for="radius">엄지 반경</label><output id="radius-value" for="radius">100%</output></div>
-        <input id="radius" type="range" min="80" max="120" step="5" value="100">
-        <div class="row"><span class="hint">양쪽 자판 크기</span><button type="button" class="reset-size" id="reset-size">기본값</button></div>
-      </div>
     </div>
-  </header>
-  <section class="note" aria-labelledby="note-heading">
-    <h1 id="note-heading">오늘의 메모</h1>
-    <textarea id="editor" aria-label="메모 내용" placeholder="여기에 입력하세요." inputmode="none" autocomplete="off" spellcheck="false"></textarea>
-  </section>
+  </div>
+  <div class="note">
+    <textarea id="editor" aria-label="메모 내용" inputmode="none" autocomplete="off" spellcheck="false"></textarea>
+  </div>
   <svg xmlns="http://www.w3.org/2000/svg" class="fan fan-left" viewBox="0 0 360 360" role="group" aria-label="왼손 자판">
 <g class="key" role="button" tabindex="0" aria-label="ㅂ" data-key="ㅂ"><path class="cap" d="M 103.66,20.47 A 355 355 0 0 0 6.33,5.06 Q 2.33,5.01 2.30,9.01 L 1.90,71.01 Q 1.87,75.01 5.87,75.06 A 285 285 0 0 1 82.47,87.19 Q 86.29,88.38 87.50,84.56 L 106.27,25.47 Q 107.48,21.66 103.66,20.47 Z"/><text class="legend" x="50.06" y="43.94" dy=".34em" text-anchor="middle" aria-hidden="true">ㅂ</text></g>
 <g class="key" role="button" tabindex="0" aria-label="ㅈ" data-key="ㅈ"><path class="cap" d="M 203.51,69.12 A 355 355 0 0 0 115.70,24.38 Q 111.91,23.10 110.65,26.90 L 91.11,85.74 Q 89.85,89.53 93.63,90.82 A 285 285 0 0 1 162.73,126.03 Q 166.00,128.34 168.33,125.08 L 204.44,74.69 Q 206.77,71.44 203.51,69.12 Z"/><text class="legend" x="145.28" y="74.88" dy=".34em" text-anchor="middle" aria-hidden="true">ㅈ</text></g>
@@ -380,7 +360,6 @@ document.addEventListener('selectionchange', checkSelection);
 const toggle = document.querySelector('#settings-toggle');
 const panel = document.querySelector('#settings');
 const radius = document.querySelector('#radius');
-const readout = document.querySelector('#radius-value');
 function closePanel() {
   panel.hidden = true;
   toggle.setAttribute('aria-expanded', 'false');
@@ -391,8 +370,7 @@ toggle.addEventListener('click', () => {
 });
 function updateRadius() {
   document.documentElement.style.setProperty('--scale', String(Number(radius.value) / 100));
-  readout.value = radius.value + '%';
-  radius.setAttribute('aria-valuetext', readout.value);
+  radius.setAttribute('aria-valuetext', radius.value + '%');
 }
 radius.addEventListener('input', updateRadius);
 document.querySelector('#reset-size').addEventListener('click', () => {
